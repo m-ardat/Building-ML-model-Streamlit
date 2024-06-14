@@ -8,7 +8,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
 import joblib
 
-
 # Рукописная функция
 def check_number(input_value):
   """Проверяет, является ли ввод числом.
