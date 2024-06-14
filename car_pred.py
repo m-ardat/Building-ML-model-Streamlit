@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import random
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
 import joblib
 
 # Рукописная функция
@@ -54,6 +56,11 @@ map_dict_country = {'Sweden': 10, 'GB': 9, 'Germany': 8,
 
 # Кортеж брендов автомобилей
 keys_model = tuple(model_dict_country.keys())
+# Кодирование автомобилей
+labelencoder = LabelEncoder()
+number_car_model = labelencoder.fit_transform(list(model_dict_country.keys()))
+# Создание словаря с закодированными значениями
+encoded_model_dict = dict(zip(model_dict_country.keys(), number_car_model))
 
 # Загружаем картинку
 img = Image.open("ford_price.png")
@@ -106,7 +113,7 @@ with col2:
     # Кнопка - выбор
     car_model = st.selectbox("Марка автомобиля", options=keys_model)
     car_country = model_dict_country[car_model]
-    car_model = model_dict_number[car_model]
+    car_model = encoded_model_dict[car_model]
     car_country = map_dict_country[car_country]
 
     # Кнопка - выбор
@@ -149,10 +156,13 @@ with col2f:
 
         X_df = pd.DataFrame(X, columns=column)
 
+        ss = MinMaxScaler()
+        X_scaled = ss.fit_transform(X_df.values)
+
         # Загрузка модели
         model = joblib.load('model.pkl')
 
-        predict = model.predict(X_df)
+        predict = model.predict(X_scaled)
         pred_f = np.abs(int(predict[0]))
 
         st.markdown(
