@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import random
-from sklearn.preprocessing import MinMaxScaler
 import joblib
 
 # Рукописная функция
@@ -150,13 +149,10 @@ with col2f:
 
         X_df = pd.DataFrame(X, columns=column)
 
-        ss = MinMaxScaler()
-        X_scaled = ss.fit_transform(X_df.values)
-
         # Загрузка модели
         model = joblib.load('model.pkl')
 
-        predict = model.predict(X_scaled)
+        predict = model.predict(X_df)
         pred_f = np.abs(int(predict[0]))
 
         st.markdown(
