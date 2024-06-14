@@ -4,9 +4,15 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import random
+
+import subprocess
+# Устанавливаем библиотеку с помощью pip
+subprocess.call(['pip', 'install', 'scikit-learn'])
+
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
 import joblib
+
 
 # Рукописная функция
 def check_number(input_value):
