@@ -39,6 +39,7 @@ map_dict_country = {'Sweden': 10, 'GB': 9, 'Germany': 8,
                     'Czech': 4, 'France': 3, 'SK': 2,
                     'India': 1, 'Italy': 0
                     }
+
 # Кортеж брендов автомобилей
 keys_model = tuple(model_dict_country.keys())
 # Кодирование автомобилей
