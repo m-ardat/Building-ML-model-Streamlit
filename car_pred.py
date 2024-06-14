@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import random
-from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
 import joblib
 
@@ -36,6 +35,18 @@ model_dict_country = {'Volvo': 'Sweden', 'Volkswagen': 'Germany','Mercedes-Benz'
                       'Kia': 'SK', 'Daewoo': 'SK', 'Force': 'Taiwan'
                       }
 
+model_dict_number = {'Volvo': 0, 'Volkswagen': 1,'Mercedes-Benz': 2,
+                      'BMW': 3, 'Audi': 4, 'Toyota': 5,
+                      'Nissan': 6, 'Mitsubishi': 7, 'Isuzu': 8,
+                      'Lexus': 9, 'Honda': 10, 'Datsun': 11,
+                      'Tata': 12, 'Maruti': 13, 'Mahindra': 14,
+                      'Ambassador': 15, 'Skoda': 16, 'Renault': 17,
+                      'Peugeot': 18, 'Jeep': 19, 'Ford': 20,
+                      'Chevrolet': 21, 'Jaguar': 22, 'Land': 23,
+                      'MG': 24, 'Fiat': 25, 'Hyundai': 26,
+                      'Kia': 27, 'Daewoo': 28, 'Force': 29
+                      }
+
 map_dict_country = {'Sweden': 10, 'GB': 9, 'Germany': 8,
                     'Japan': 7, 'Taiwan': 6, 'USA': 5,
                     'Czech': 4, 'France': 3, 'SK': 2,
@@ -44,11 +55,6 @@ map_dict_country = {'Sweden': 10, 'GB': 9, 'Germany': 8,
 
 # Кортеж брендов автомобилей
 keys_model = tuple(model_dict_country.keys())
-# Кодирование автомобилей
-labelencoder = LabelEncoder()
-number_car_model = labelencoder.fit_transform(list(model_dict_country.keys()))
-# Создание словаря с закодированными значениями
-encoded_model_dict = dict(zip(model_dict_country.keys(), number_car_model))
 
 # Загружаем картинку
 img = Image.open("ford_price.png")
@@ -101,7 +107,7 @@ with col2:
     # Кнопка - выбор
     car_model = st.selectbox("Марка автомобиля", options=keys_model)
     car_country = model_dict_country[car_model]
-    car_model = encoded_model_dict[car_model]
+    car_model = model_dict_number[car_model]
     car_country = map_dict_country[car_country]
 
     # Кнопка - выбор
@@ -151,10 +157,10 @@ with col2f:
         model = joblib.load('model.pkl')
 
         predict = model.predict(X_scaled)
-        pred = np.abs(int(predict[0]))
+        pred_f = np.abs(int(predict[0]))
 
         st.markdown(
             f'<div style="background-color: white;'
-            f'color: black;">Предсказанная стоимость автомобиля: {pred}</div>',
+            f'color: black;">Предсказанная стоимость автомобиля: {pred_f}</div>',
             unsafe_allow_html=True
         )
